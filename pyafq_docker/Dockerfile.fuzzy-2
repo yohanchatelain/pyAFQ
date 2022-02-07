@@ -1,0 +1,32 @@
+###############################################################################
+# Dockerfile to build fuzzy pyAFQ 
+###############################################################################
+
+# Use fuzzy base image
+FROM verificarlo/fuzzy:v0.6.0-lapack-python3.8.5-numpy-scipy
+
+RUN echo 'libinterflop_ieee.so' > $VFC_BACKENDS_FROM_FILE
+
+ARG COMMIT=0.10
+ENV CC='verificarlo-c --conservative'
+ENV FC='verificarlo-f --conservative'
+ENV CXX='verificarlo-c++ --conservative'
+ENV LDSHARED='verificarlo-c -shared'
+
+RUN apt-get -y update &&\
+    apt-get -y --no-install-recommends install ffmpeg &&\
+    rm -rf /var/lib/apt/lists/*
+
+# Install pyAFQ
+RUN python3 -m pip install --upgrade pip &&\
+    python3 -m pip install pytest fslpy h5py cvxpy
+
+RUN cd /opt/build/ &&\
+    git clone -b 0.10 --depth=1 https://github.com/yeatmanlab/pyAFQ.git &&\
+    cd pyAFQ &&\
+    python3 -m pip install .[dev,fury,afqbrowser,plot,msmt] 
+
+RUN cd /opt/build/pyAFQ &&\
+    mkdir for_test &&\
+    cd for_test &&\
+    pytest --pyargs AFQ --cov-report term-missing --cov=AFQ -m "not nightly and not nightly_basic and not nightly_msmt_and_init and not nightly_custom and not nightly_anisotropic and not nightly_slr and not nightly_pft and not nightly_reco" --durations=0

@@ -1,0 +1,36 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - NAME: Fuzzy Level 0 (libmath)
+            DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-0
+            DOCKER_IMAGE: pyafq-fuzzy-0
+
+          - NAME: Fuzzy Level 1 (lvl 0 + Python)
+            DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-1
+            DOCKER_IMAGE: pyafq-fuzzy-1
+
+          - NAME: Fuzzy Level 2 (lvl 1 + NumPy + SciPy)
+            DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-2
+            DOCKER_IMAGE: pyafq-fuzzy-2
+
+
+
+    name: ${{  matrix.NAME }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file ${{ matrix.DOCKER_FILE }} --tag ${{ matrix.DOCKER_IMAGE }}:$(date +%s)
