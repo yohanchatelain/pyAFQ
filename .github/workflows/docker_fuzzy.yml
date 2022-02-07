@@ -11,7 +11,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.VFC_BACKENDS }} == "libinterflop_mca.so -m mca"
+    continue-on-error: ${{ matrix.VFC_BACKENDS == "libinterflop_mca.so -m mca" }}
     strategy:
       fail-fast: false
       matrix:
