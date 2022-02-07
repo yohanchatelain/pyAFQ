@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Fuzzy Docker Image CI 
 
 on:
   push:
@@ -14,6 +14,7 @@ jobs:
 
     strategy:
       matrix:
+        vfcbackend: ["libinterflop_ieee.so", "libinterflop_mca.so -m mca", "libinterflop_mca.so -m rr"]
         include:
           - NAME: Fuzzy Level 0 (libmath)
             DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-0
@@ -33,4 +34,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file ${{ matrix.DOCKER_FILE }} --tag ${{ matrix.DOCKER_IMAGE }}:$(date +%s)
+      run: docker build . --file ${{ matrix.DOCKER_FILE }} --tag ${{ matrix.DOCKER_IMAGE }}:$(date +%s) --build-arg vfcbackends="${{ matrix.vfcbackend }}"

@@ -1,9 +1,11 @@
 ###############################################################################
-# Dockerfile to build fuzzy pyAFQ 
+# Dockerfile to build fuzzy pyAFQ
 ###############################################################################
 
 # Use fuzzy base image
 FROM verificarlo/fuzzy:v0.6.0-lapack-python3.8.5-numpy-scipy
+
+ARG vfcbackends
 
 RUN echo 'libinterflop_ieee.so' > $VFC_BACKENDS_FROM_FILE
 
@@ -24,7 +26,9 @@ RUN python3 -m pip install --upgrade pip &&\
 RUN cd /opt/build/ &&\
     git clone -b 0.10 --depth=1 https://github.com/yeatmanlab/pyAFQ.git &&\
     cd pyAFQ &&\
-    python3 -m pip install .[dev,fury,afqbrowser,plot,msmt] 
+    python3 -m pip install .[dev,fury,afqbrowser,msmt]
+
+RUN echo "${vfcbackends}" > $VFC_BACKENDS_FROM_FILE
 
 RUN cd /opt/build/pyAFQ &&\
     mkdir for_test &&\
