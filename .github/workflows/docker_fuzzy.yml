@@ -11,8 +11,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    continue-on-error: ${{ matrix.VFC_BACKENDS }} == "libinterflop_mca.so -m mca"
     strategy:
+      fail-fast: false
       matrix:
         VFC_BACKENDS: ["libinterflop_ieee.so", "libinterflop_mca.so -m mca", "libinterflop_mca.so -m rr"]
         FUZZY_LEVEL: [0, 1, 2]
