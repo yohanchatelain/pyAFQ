@@ -16,15 +16,18 @@ jobs:
       matrix:
         vfcbackend: ["libinterflop_ieee.so", "libinterflop_mca.so -m mca", "libinterflop_mca.so -m rr"]
         include:
-          - NAME: Fuzzy Level 0 (libmath)
+          - vfcbackend: '*'
+            NAME: Fuzzy Level 0 (libmath)
             DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-0
             DOCKER_IMAGE: pyafq-fuzzy-0
 
-          - NAME: Fuzzy Level 1 (lvl 0 + Python)
+          - vfcbackend: '*'
+            NAME: Fuzzy Level 1 (lvl 0 + Python)
             DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-1
             DOCKER_IMAGE: pyafq-fuzzy-1
 
-          - NAME: Fuzzy Level 2 (lvl 1 + NumPy + SciPy)
+          - vfcbackend: '*'
+            NAME: Fuzzy Level 2 (lvl 1 + NumPy + SciPy)
             DOCKER_FILE: ./pyafq_docker/Dockerfile.fuzzy-2
             DOCKER_IMAGE: pyafq-fuzzy-2
 
