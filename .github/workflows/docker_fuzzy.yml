@@ -11,20 +11,21 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.expected_fail }}
+    continue-on-error: ${{ matrix.expected_failure }}
     strategy:
       fail-fast: false
       matrix:
         VFC_BACKENDS: ["libinterflop_ieee.so", "libinterflop_mca.so -m rr"]
         FUZZY_LEVEL: [0, 1, 2]
+        expected_failure: [false]
         include:
           - FUZZY_LEVEL: 0
             VFC_BACKENDS: 'libinterflop_mca.so -m mca'
-            expected_fail: false
+            expected_failure: false
           
           - FUZZY_LEVEL: [1, 2]
             VFC_BACKENDS: 'libinterflop_mca.so -m mca'
-            expected_fail: true
+            expected_failure: true
 
 
 
