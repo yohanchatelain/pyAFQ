@@ -23,10 +23,13 @@ jobs:
             VFC_BACKENDS: 'libinterflop_mca.so -m mca'
             expected_failure: false
           
-          - FUZZY_LEVEL: [1, 2]
+          - FUZZY_LEVEL: 1
             VFC_BACKENDS: 'libinterflop_mca.so -m mca'
             expected_failure: true
 
+          - FUZZY_LEVEL: 2
+            VFC_BACKENDS: 'libinterflop_mca.so -m mca'
+            expected_failure: true
 
 
     name: Fuzzy level ${{ matrix.FUZZY_LEVEL }} | ${{ matrix.VFC_BACKENDS }}
