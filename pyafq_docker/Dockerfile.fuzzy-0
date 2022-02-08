@@ -29,7 +29,7 @@ RUN python3 -m pip install --upgrade pip &&\
 RUN cd /opt/build/ &&\
     git clone -b 0.10 --depth=1 https://github.com/yeatmanlab/pyAFQ.git &&\
     cd pyAFQ &&\
-    python3 -m pip install .[dev,fury,afqbrowser,msmt]
+    python3 -m pip install .[dev,fury,afqbrowser]
 
 RUN echo "${vfcbackends}" > $VFC_BACKENDS_FROM_FILE
 
