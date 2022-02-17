@@ -7,9 +7,6 @@ FROM yohanchatelain/fuzzy:v0.7.x-interflop-call-lapack-python3.8.5-numpy-scipy
 
 ARG vfcbackends="libinterflop_ieee.so"
 
-COPY AFQ_data $HOME/
-COPY AFQ/tests/data $HOME/
-
 RUN echo 'libinterflop_ieee.so' > $VFC_BACKENDS_FROM_FILE
 
 ARG COMMIT=0.10
