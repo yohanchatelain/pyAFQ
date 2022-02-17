@@ -3,12 +3,12 @@
 ###############################################################################
 
 # Use fuzzy base image
-FROM verificarlo/fuzzy:v0.6.0-lapack-python3.8.5
+FROM yohanchatelain/fuzzy:v0.7.x-interflop-call-lapack-python3.8.5
 
 ARG vfcbackends="libinterflop_ieee.so"
 
-# COPY AFQ_data $HOME/
-# COPY AFQ/tests/data $HOME/
+COPY AFQ_data $HOME/
+COPY AFQ/tests/data $HOME/
 
 RUN echo 'libinterflop_ieee.so' > $VFC_BACKENDS_FROM_FILE
 
@@ -24,7 +24,7 @@ RUN apt-get -y update &&\
 
 # Install pyAFQ
 RUN python3 -m pip install --upgrade pip &&\
-    python3 -m pip install pytest fslpy h5py cvxpy
+    python3 -m pip install pytest fslpy h5py cvxpy pytest-xdist matplotlib
 
 RUN cd /opt/build/ &&\
     git clone -b 0.10 --depth=1 https://github.com/yeatmanlab/pyAFQ.git &&\
@@ -33,7 +33,7 @@ RUN cd /opt/build/ &&\
 
 RUN echo "${vfcbackends}" > $VFC_BACKENDS_FROM_FILE
 
-RUN cd /opt/build/pyAFQ &&\
-    mkdir for_test &&\
-    cd for_test &&\
-    pytest --pyargs AFQ --cov-report term-missing --cov=AFQ -m "not nightly and not nightly_basic and not nightly_msmt_and_init and not nightly_custom and not nightly_anisotropic and not nightly_slr and not nightly_pft and not nightly_reco" --durations=0
+# RUN cd /opt/build/pyAFQ &&\
+#     mkdir for_test &&\
+#     cd for_test &&\
+#     pytest --pyargs AFQ --cov-report term-missing --cov=AFQ -m "not nightly and not nightly_basic and not nightly_msmt_and_init and not nightly_custom and not nightly_anisotropic and not nightly_slr and not nightly_pft and not nightly_reco" --durations=0
